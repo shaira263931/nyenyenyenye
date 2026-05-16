@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Question Flow</title>
+
+<!-- 💖 FONT -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+
+<style>
+  body {
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+    background: linear-gradient(135deg, #4c1d95, #1d4ed8);
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+  }
+
+  /* 💕 HEARTS */
+  .heart-bg {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .heart-bg span {
+    position: absolute;
+    bottom: -20px;
+    font-size: 20px;
+    animation: floatUp 6s linear infinite;
+    opacity: 0.8;
+  }
+
+  @keyframes floatUp {
+    0% { transform: translateY(0) scale(1); opacity: 0.8; }
+    100% { transform: translateY(-110vh) scale(1.8); opacity: 0; }
+  }
+
+  /* 📱 PHONE SCREEN CARD */
+  .screen {
+    width: 92%;
+    max-width: 420px;
+    height: 90vh;
+    padding: 20px;
+    border-radius: 30px;
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(15px);
+    box-shadow: 0 0 40px rgba(0,0,0,0.5);
+    position: absolute;
+    text-align: center;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  h1 {
+    font-family: "Playfair Display", serif;
+    font-size: 1.8rem;
+    color: #ffe4f2;
+    margin-bottom: 10px;
+  }
+
+  p {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  button {
+    padding: 14px 28px;
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    background: linear-gradient(135deg, #a855f7, #ec4899);
+    color: white;
+    margin-top: 10px;
+  }
+
+  #mainScreen {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.9);
+    transition: 0.6s ease;
+  }
+
+  #mainScreen.show {
+    opacity: 1;
+    pointer-events: auto;
+    transform: scale(1);
+  }
+
+  /* 📸 PHOTO MOBILE FRIENDLY */
+  .her-photo {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 25px;
+    margin: 10px auto;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: 1s ease;
+    box-shadow: 0 0 25px rgba(236,72,153,0.5);
+  }
+
+  .her-photo.show {
+    opacity: 1;
+    transform: scale(1);
+    box-shadow: 0 0 40px rgba(236,72,153,0.8),
+                0 0 80px rgba(168,85,247,0.6);
+  }
+
+  .btn-area {
+    position: relative;
+    height: 120px;
+    margin-top: 10px;
+  }
+
+  #yesBtn, #noBtn {
+    position: absolute;
+    padding: 12px 25px;
+    border-radius: 50px;
+    border: none;
+    font-weight: bold;
+  }
+
+  #yesBtn { left: 20%; top: 30%; }
+  #noBtn { left: 55%; top: 30%; }
+
+  .message {
+    display: none;
+    margin-top: 15px;
+    font-size: 1rem;
+    color: #f9a8d4;
+  }
+
+  /* 💬 bottom text */
+  .bottom-text {
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.9rem;
+    color: #fbcfe8;
+    z-index: 5;
+    opacity: 0.9;
+    pointer-events: none;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="heart-bg" id="heartBg"></div>
+
+<!-- SCREEN 1 -->
+<div class="screen" id="askScreen">
+  <h1>Hii miss ang ganda mo naman po.💜</h1>
+  <button onclick="goToMain()">Continue 💜</button>
+</div>
+
+<!-- SCREEN 2 -->
+<div class="screen" id="mainScreen">
+
+  <img src="her.png" class="her-photo" id="herPhoto" alt="her">
+
+  <h1>
+    Mylovie, lovelove,darling...<br>
+    Can I court U po?💜💙
+  </h1>
+
+  <p>
+    I may not be perfect, but I’m sincere po.<br>
+    I want to know u more and take care of u po lovelove.
+  </p>
+
+  <div class="btn-area">
+    <button id="yesBtn">YES 💖</button>
+    <button id="noBtn">NO 😭</button>
+  </div>
+
+  <div class="message" id="message">
+    YAYY!!! 💕I LOVE YOU LOVELOVEq, I promise I won't hurt U po and I’ll make U smile everyday lovelove.💜💙
+  </div>
+
+</div>
+
+<div class="bottom-text">
+  Try clicking NO if you can 😭
+</div>
+
+<!-- MUSIC -->
+<audio id="bgMusic" loop>
+  <source src="kanibalismo.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+  const askScreen = document.getElementById("askScreen");
+  const mainScreen = document.getElementById("mainScreen");
+  const herPhoto = document.getElementById("herPhoto");
+  const yesBtn = document.getElementById("yesBtn");
+  const noBtn = document.getElementById("noBtn");
+  const message = document.getElementById("message");
+  const music = document.getElementById("bgMusic");
+
+  function goToMain() {
+    askScreen.style.display = "none";
+    mainScreen.classList.add("show");
+  }
+
+  let noScale = 1;
+
+  yesBtn.addEventListener("click", () => {
+    message.style.display = "block";
+    herPhoto.classList.add("show");
+    music.play();
+    startHearts();
+  });
+
+  noBtn.addEventListener("mouseover", () => {
+    const w = document.querySelector(".btn-area").offsetWidth;
+    const h = document.querySelector(".btn-area").offsetHeight;
+
+    noBtn.style.left = Math.random() * (w - 120) + "px";
+    noBtn.style.top = Math.random() * (h - 60) + "px";
+
+    noScale = Math.max(0.3, noScale - 0.08);
+    noBtn.style.transform = `scale(${noScale})`;
+  });
+
+  function startHearts() {
+    const heartBg = document.getElementById("heartBg");
+    const emojis = ["💜","💙","💕","💖","🌸","🌷"];
+
+    setInterval(() => {
+      const span = document.createElement("span");
+      span.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+
+      span.style.left = Math.random() * 100 + "vw";
+      span.style.fontSize = (Math.random() * 18 + 14) + "px";
+      span.style.animationDuration = (Math.random() * 4 + 4) + "s";
+
+      heartBg.appendChild(span);
+
+      setTimeout(() => span.remove(), 7000);
+    }, 200);
+  }
+</script>
+
+</body>
+</html>
